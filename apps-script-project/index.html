@@ -1,260 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base target="_top"> <!-- 앱스 스크립트 웹앱에서는 필수 -->
+    <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>학교 분실물 조회</title>
+    <title>학교 분실물 센터</title> <!-- 제목 수정 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a90e2; /* 주 색상 (파랑) */
-            --secondary-color: #50e3c2; /* 보조 색상 (청록) */
-            --accent-color: #f5a623; /* 강조 색상 (주황) - 상태 태그 등에 사용 가능 */
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2; /* 등록 버튼에 사용 */
+            --accent-color: #f5a623;
             --text-color-dark: #333333;
             --text-color-medium: #555555;
             --text-color-light: #777777;
-            --background-color: #f4f7f6; /* 전체 배경 */
-            --card-background-color: #ffffff; /* 카드 배경 */
-            --border-color: #e0e0e0; /* 테두리 */
+            --background-color: #f4f7f6;
+            --card-background-color: #ffffff;
+            --border-color: #e0e0e0;
             --shadow-color: rgba(0,0,0,0.08);
-            --danger-color: #e74c3c; /* 오류 메시지 */
+            --danger-color: #e74c3c;
         }
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            margin: 0;
-            background-color: var(--background-color);
-            color: var(--text-color-dark);
-            line-height: 1.6;
+            font-family: 'Noto Sans KR', sans-serif; margin: 0; background-color: var(--background-color);
+            color: var(--text-color-dark); line-height: 1.6;
         }
-        .app-container {
-            max-width: 1000px; /* 약간 넓게 */
-            margin: 0 auto;
-            padding: 20px 15px; /* 좌우 패딩 줄임 (모바일 고려) */
-        }
+        .app-container { max-width: 1000px; margin: 0 auto; padding: 20px 15px; }
         .site-title-header {
-            background-color: var(--primary-color);
-            color: var(--card-background-color);
-            padding: 30px 20px;
-            text-align: center;
-            border-radius: 0 0 12px 12px; /* 하단 모서리 둥글게 */
-            box-shadow: 0 3px 6px var(--shadow-color);
+            background-color: var(--primary-color); color: var(--card-background-color); padding: 30px 20px;
+            text-align: center; border-radius: 0 0 12px 12px; box-shadow: 0 3px 6px var(--shadow-color);
             margin-bottom: 30px;
         }
-        .site-title-header h1 {
-            margin: 0;
-            font-size: 2.2em;
-            font-weight: 700;
-        }
-        .site-title-header p {
-            margin: 8px 0 0;
-            font-size: 1em;
-            opacity: 0.9;
-        }
+        .site-title-header h1 { margin: 0; font-size: 2.2em; font-weight: 700; }
+        .site-title-header p { margin: 8px 0 0; font-size: 1em; opacity: 0.9; }
         .controls-panel {
-            background-color: var(--card-background-color);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px var(--shadow-color);
-            margin-bottom: 30px;
-            display: flex;
-            flex-wrap: wrap; /* 작은 화면에서 줄바꿈 */
-            gap: 15px; /* 요소 간 간격 */
-            align-items: center;
+            background-color: var(--card-background-color); padding: 25px; border-radius: 10px;
+            box-shadow: 0 2px 8px var(--shadow-color); margin-bottom: 30px; display: flex;
+            flex-wrap: wrap; gap: 15px; align-items: center;
         }
         .search-field {
-            flex-grow: 1; /* 남는 공간 차지 */
-            padding: 14px 18px; /* 패딩 증가 */
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1em;
-            min-width: 250px; /* 최소 너비 */
+            flex-grow: 1; padding: 14px 18px; border: 1px solid var(--border-color);
+            border-radius: 6px; font-size: 1em; min-width: 250px;
         }
         .search-field:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
         .action-button {
-            padding: 14px 22px; /* 패딩 증가 */
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            white-space: nowrap; /* 버튼 텍스트 줄바꿈 방지 */
+            padding: 14px 22px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 1em; font-weight: 500; transition: all 0.2s ease; white-space: nowrap;
         }
-        .button-search {
-            background-color: var(--primary-color);
-            color: var(--card-background-color);
-        }
-        .button-search:hover {
-            background-color: #3a80d2; /* 약간 어둡게 */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .button-search { background-color: var(--primary-color); color: var(--card-background-color); }
+        .button-search:hover { background-color: #3a80d2; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* ▼▼▼ 등록 버튼 스타일 다시 추가 ▼▼▼ */
         .button-register {
             background-color: var(--secondary-color);
             color: var(--text-color-dark);
         }
         .button-register:hover {
-            background-color: #40d3b2; /* 약간 어둡게 */
+            background-color: #40d3b2;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+        /* ▲▲▲ 등록 버튼 스타일 다시 추가 ▲▲▲ */
 
-        .results-summary {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-            color: var(--text-color-medium);
-        }
-        .item-grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 카드 최소/최대 너비 */
-            gap: 20px;
-            padding: 0;
-            list-style-type: none;
-        }
+        .results-summary { text-align: center; margin-bottom: 20px; font-size: 0.95em; color: var(--text-color-medium); }
+        .item-grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0; list-style-type: none; }
         .item-card-display {
-            background-color: var(--card-background-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px; /* 모서리 더 둥글게 */
-            padding: 22px;
-            box-shadow: 0 1px 4px var(--shadow-color);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            display: flex; /* 내부 요소 정렬 위해 flex 사용 가능 */
-            flex-direction: column;
+            background-color: var(--card-background-color); border: 1px solid var(--border-color); border-radius: 10px;
+            padding: 22px; box-shadow: 0 1px 4px var(--shadow-color); transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex; flex-direction: column;
         }
-        .item-card-display:hover {
-            transform: translateY(-4px); /* 호버 시 약간 더 위로 */
-            box-shadow: 0 5px 12px rgba(0,0,0,0.12);
-        }
-        .item-card-display h3 {
-            font-size: 1.3em; /* 제목 크기 증가 */
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 0 0 15px 0; /* 하단 마진 증가 */
-            word-break: break-word; /* 긴 제목 줄바꿈 */
-        }
-        .item-card-display p {
-            margin: 8px 0; /* p 태그 간 간격 */
-            font-size: 0.9em;
-            color: var(--text-color-medium);
-            flex-grow: 1; /* 내용이 적을 때도 카드 높이 유지되도록 */
-        }
-        .item-card-display strong {
-            font-weight: 500;
-            color: var(--text-color-dark);
-        }
+        .item-card-display:hover { transform: translateY(-4px); box-shadow: 0 5px 12px rgba(0,0,0,0.12); }
+        .item-card-display h3 { font-size: 1.3em; font-weight: 700; color: var(--primary-color); margin: 0 0 15px 0; word-break: break-word; }
+        .item-card-display p { margin: 8px 0; font-size: 0.9em; color: var(--text-color-medium); flex-grow: 1; }
+        .item-card-display strong { font-weight: 500; color: var(--text-color-dark); }
         .item-photo-link {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 8px 14px;
-            background-color: var(--background-color);
-            color: var(--primary-color);
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.85em;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-            align-self: flex-start; /* 버튼 왼쪽 정렬 */
+            display: inline-block; margin-top: 12px; padding: 8px 14px; background-color: var(--background-color);
+            color: var(--primary-color); text-decoration: none; border-radius: 5px; font-size: 0.85em;
+            font-weight: 500; transition: background-color 0.2s ease; align-self: flex-start;
         }
-        .item-photo-link:hover {
-            background-color: #e8ebea;
+        .item-photo-link:hover { background-color: #e8ebea; }
+        .status-indicator {
+            display: inline-block; padding: 4px 10px; border-radius: 15px; font-size: 0.8em;
+            font-weight: 500; color: var(--card-background-color); text-transform: capitalize;
         }
-        .status-indicator { /* 상태 태그 스타일 */
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 15px; /* 타원형 */
-            font-size: 0.8em;
-            font-weight: 500;
-            color: var(--card-background-color);
-            text-transform: capitalize; /* 첫 글자 대문자 (영문 상태 시) */
-        }
-        /* 상태별 색상 (시트의 '상태' 열 값과 일치해야 함, 공백은 CSS 클래스명으로 부적합하므로 변환 필요) */
-        .status-보관중 { background-color: var(--accent-color); } /* 주황 */
-        .status-주인찾음 { background-color: #28a745; } /* 녹색 */
-        .status-기간만료 { background-color: var(--danger-color); } /* 빨강 */
-        .status-처리완료 { background-color: #6c757d; } /* 회색 */
+        .status-보관중 { background-color: var(--accent-color); } .status-주인찾음 { background-color: #28a745; }
+        .status-기간만료 { background-color: var(--danger-color); } .status-처리완료 { background-color: #6c757d; }
         .status-기타 { background-color: var(--text-color-light); }
 
-        .message-display { /* 로딩, 결과없음, 오류 메시지 공통 */
-            text-align: center;
-            padding: 35px 20px;
-            font-size: 1.1em;
-            color: var(--text-color-medium);
-            background-color: var(--card-background-color);
-            border-radius: 8px;
-            margin-top: 20px;
-        }
+        .message-display { text-align: center; padding: 35px 20px; font-size: 1.1em; color: var(--text-color-medium); background-color: var(--card-background-color); border-radius: 8px; margin-top: 20px; }
         .message-display.error { color: var(--danger-color); font-weight: 500; }
-
-        .pagination-navigation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 35px;
-            padding-bottom: 30px;
-        }
+        .pagination-navigation { display: flex; justify-content: center; align-items: center; margin-top: 35px; padding-bottom: 30px; }
         .pagination-button {
-            padding: 10px 18px;
-            margin: 0 6px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-background-color);
-            color: var(--primary-color);
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.95em;
+            padding: 10px 18px; margin: 0 6px; border: 1px solid var(--border-color); background-color: var(--card-background-color);
+            color: var(--primary-color); border-radius: 5px; cursor: pointer; font-size: 0.95em;
             transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         }
-        .pagination-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-            background-color: var(--background-color);
-        }
-        .pagination-button:not(:disabled):hover {
-            background-color: var(--primary-color);
-            color: var(--card-background-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .pagination-page-info {
-            margin: 0 18px;
-            font-size: 0.95em;
-            color: var(--text-color-medium);
-        }
+        .pagination-button:disabled { cursor: not-allowed; opacity: 0.5; background-color: var(--background-color); }
+        .pagination-button:not(:disabled):hover { background-color: var(--primary-color); color: var(--card-background-color); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .pagination-page-info { margin: 0 18px; font-size: 0.95em; color: var(--text-color-medium); }
 
-        /* 작은 화면 대응 */
-        @media (max-width: 768px) { /* 태블릿 사이즈부터 변화 */
+        @media (max-width: 768px) {
             .controls-panel { flex-direction: column; align-items: stretch; }
-            .search-field { min-width: 0; /* flex-grow가 작동하도록 */ }
-            .action-button { width: 100%; }
+            .search-field { min-width: 0; } .action-button { width: 100%; }
             .item-grid-container { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
             .site-title-header h1 { font-size: 1.9em; }
         }
-        @media (max-width: 480px) { /* 모바일 사이즈 */
-             .item-grid-container { grid-template-columns: 1fr; } /* 모바일에서는 1열 */
-             .site-title-header h1 { font-size: 1.7em; }
-             .site-title-header p { font-size: 0.9em; }
-             .item-card-display h3 { font-size: 1.2em; }
+        @media (max-width: 480px) {
+             .item-grid-container { grid-template-columns: 1fr; } .site-title-header h1 { font-size: 1.7em; }
+             .site-title-header p { font-size: 0.9em; } .item-card-display h3 { font-size: 1.2em; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
         <header class="site-title-header">
-            <h1>🏫 학교 분실물 센터</h1>
-            <p>잃어버린 물건을 찾거나, 습득한 물건 등록 안내를 받을 수 있습니다.</p>
+            <h1>🏫 학교 분실물 센터</h1> <!-- 제목 수정 -->
+            <p>잃어버린 물건을 찾거나, 습득한 물건을 등록할 수 있습니다.</p> <!-- 부제목 수정 -->
         </header>
 
         <section class="controls-panel">
             <input type="text" id="searchInputField" class="search-field" placeholder="물품명, 카테고리, 특징 등으로 검색...">
             <button onclick="triggerSearch()" class="action-button button-search">🔍 검색</button>
-            <!-- Code.gs에서 전달된 등록 페이지 URL 사용 -->
-            <button onclick="navigateToRegisterPage('<?= registerPageUrl ?>')" class="action-button button-register">➕ 분실물 등록 안내</button>
+            <!-- ▼▼▼ "분실물 등록하기" 버튼 다시 추가 ▼▼▼ -->
+            <button onclick="navigateToRegisterPage('<?= registerPageUrl ?>')" class="action-button button-register">➕ 분실물 등록하기</button>
+            <!-- ▲▲▲ "분실물 등록하기" 버튼 다시 추가 ▲▲▲ -->
         </section>
 
         <div id="resultsSummary" class="results-summary" style="display:none;"></div>
-
         <div id="loadingIndicator" class="message-display" style="display:none;">
             <p>데이터를 불러오는 중입니다. 잠시만 기다려주세요...</p>
         </div>
@@ -265,9 +136,7 @@
             <p>오류가 발생했습니다. 페이지를 새로고침하거나 관리자에게 문의해주세요.</p>
         </div>
 
-        <ul id="lostItemList" class="item-grid-container">
-            <!-- 분실물 아이템 카드가 여기에 동적으로 추가됩니다 -->
-        </ul>
+        <ul id="lostItemList" class="item-grid-container"></ul>
 
         <nav id="paginationControls" class="pagination-navigation" style="display:none;">
             <button id="prevPageBtn" onclick="requestPageChange(-1)" class="pagination-button">이전</button>
@@ -277,39 +146,35 @@
     </div>
 
     <script>
-        // --- 전역 상태 변수 ---
         var g_currentPage = 1;
         var g_totalPages = 1;
         var g_currentSearchTerm = "";
-        // Code.gs에서 전달된 웹 앱 URL (<?= scriptUrl ?>는 서버 사이드 템플릿팅)
         var APP_SCRIPT_URL = "<?= scriptUrl ?>";
 
-        // --- 페이지 로드 시 초기화 ---
         document.addEventListener('DOMContentLoaded', function() {
             fetchAndDisplayItems(g_currentSearchTerm, g_currentPage);
-            // 검색창에서 Enter 키 입력 시 검색 실행
             document.getElementById('searchInputField').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
-                    event.preventDefault(); // 폼 제출 방지 (만약 form 태그 안에 있다면)
+                    event.preventDefault();
                     triggerSearch();
                 }
             });
         });
 
-        // --- 네비게이션 함수 ---
+        // ▼▼▼ navigateToRegisterPage 함수 다시 추가 ▼▼▼
         function navigateToRegisterPage(url) {
-            if (url && url !== "YOUR_REGISTER_PAGE_HOSTED_URL_HERE" && !url.includes("undefined")) { // URL 유효성 체크
+            if (url && !url.includes("YOUR_REGISTER_PAGE_HOSTED_URL_HERE") && !url.includes("undefined")) { // URL 유효성 체크 강화
                  window.open(url, '_blank'); // 새 탭에서 등록 안내 페이지 열기
             } else {
-                console.warn("등록 페이지 URL이 올바르게 설정되지 않았습니다:", url);
-                alert("분실물 등록 안내 페이지를 열 수 없습니다. URL 설정을 확인해주세요.");
+                console.warn("등록 페이지 URL이 올바르게 설정되지 않았습니다. Code.gs의 registerPageUrl 변수를 확인하세요. 현재 값:", url);
+                alert("분실물 등록 페이지를 열 수 없습니다. 관리자에게 문의하거나 페이지 설정을 확인해주세요.");
             }
         }
+        // ▲▲▲ navigateToRegisterPage 함수 다시 추가 ▲▲▲
 
-        // --- 데이터 요청 및 처리 ---
         function triggerSearch() {
             g_currentSearchTerm = document.getElementById('searchInputField').value.trim();
-            g_currentPage = 1; // 검색 시 항상 첫 페이지로 리셋
+            g_currentPage = 1;
             fetchAndDisplayItems(g_currentSearchTerm, g_currentPage);
         }
 
@@ -326,13 +191,13 @@
             google.script.run
                 .withSuccessHandler(handleDataResponse)
                 .withFailureHandler(handleDataError)
-                .getLostItemsData(searchTerm, pageNum); // Code.gs의 함수 호출
+                .getLostItemsData(searchTerm, pageNum);
         }
 
         function handleDataResponse(response) {
             showLoadingState(false);
             var itemListUl = document.getElementById('lostItemList');
-            itemListUl.innerHTML = ''; // 이전 목록 초기화
+            itemListUl.innerHTML = ''; 
 
             if (response.error) {
                 displayErrorMessage("데이터 조회 중 서버 오류: " + response.error);
@@ -340,8 +205,8 @@
                 return;
             }
 
-            g_totalPages = response.totalPages; // 전역 변수 업데이트
-            g_currentPage = response.currentPage; // 전역 변수 업데이트
+            g_totalPages = response.totalPages;
+            g_currentPage = response.currentPage;
 
             if (response.items && response.items.length > 0) {
                 response.items.forEach(function(itemData) {
@@ -360,58 +225,43 @@
 
         function handleDataError(error) {
             showLoadingState(false);
-            displayErrorMessage("데이터를 불러오는 데 실패했습니다. 네트워크 연결을 확인하거나 잠시 후 다시 시도해주세요. (상세: " + error.message +")");
+            displayErrorMessage("데이터를 불러오는 데 실패했습니다. (상세: " + error.message +")");
             console.error('Error fetching items:', error);
         }
 
-        // --- UI 요소 동적 생성 ---
         function createLostItemCard(item) {
             var cardLi = document.createElement('li');
             cardLi.className = 'item-card-display';
-
             var titleH3 = document.createElement('h3');
-            titleH3.textContent = escapeText(item['물품명']) || '제목 없음'; // 시트의 '물품명' 헤더와 일치해야 함
+            titleH3.textContent = escapeText(item['물품명']) || '제목 없음';
             cardLi.appendChild(titleH3);
-
-            // 주요 정보 표시 (Google Sheets의 실제 헤더 이름과 일치해야 함)
+            addDetailToCard(cardLi, 'ID', item['ID']);
             addDetailToCard(cardLi, '카테고리', item['카테고리']);
             addDetailToCard(cardLi, '발견장소', item['발견장소']);
             addDetailToCard(cardLi, '특징', item['특징']);
-
-            // 타임스탬프 또는 등록일 (시트의 헤더 이름 확인 필요)
             var dateValue = item['타임스탬프'] || item['등록일'] || item['Timestamp'];
-            if (dateValue) {
-                addDetailToCard(cardLi, '등록일', formatDateString(dateValue));
-            }
-
-            // 상태 표시 (시트의 '상태' 헤더 이름 확인 필요)
+            if (dateValue) { addDetailToCard(cardLi, '등록일', formatDateString(dateValue)); }
             var statusValue = item['상태'];
             if (statusValue) {
                 var statusP = document.createElement('p');
                 statusP.innerHTML = '<strong>상태:</strong> ';
                 var statusSpan = document.createElement('span');
-                var statusClass = String(statusValue).trim().replace(/\s+/g, '') || '기타'; // 공백 제거
+                var statusClass = String(statusValue).trim().replace(/\s+/g, '') || '기타';
                 statusSpan.className = 'status-indicator status-' + statusClass;
                 statusSpan.textContent = escapeText(statusValue);
                 statusP.appendChild(statusSpan);
                 cardLi.appendChild(statusP);
             }
-
-            // 사진 링크 (Google Form에서 파일 업로드 질문의 응답이 저장된 열 이름 확인)
-            var photoFieldName = '사진'; // 실제 시트의 사진 관련 열 이름으로 변경 (예: '사진 첨부', '파일 업로드')
+            var photoFieldName = '사진';
             var photoData = item[photoFieldName];
             if (photoData) {
-                // Google Form 파일 업로드 응답은 보통 Drive 파일 ID 여러 개를 콤마로 구분한 문자열로 저장됨
                 var fileIds = String(photoData).split(',').map(function(id) { return id.trim(); });
-                if (fileIds.length > 0 && fileIds[0]) { // 첫 번째 사진만 링크로 표시 (또는 여러 개 표시 로직 추가)
+                if (fileIds.length > 0 && fileIds[0]) {
                     var photoLinkA = document.createElement('a');
                     photoLinkA.className = 'item-photo-link';
                     photoLinkA.textContent = '📷 사진 보기';
                     photoLinkA.target = '_blank';
-                    // Google Drive 파일 직접 보기 링크 (파일 공유 설정이 "링크가 있는 모든 사용자에게 공개"여야 함)
                     photoLinkA.href = 'https://drive.google.com/file/d/' + fileIds[0] + '/view?usp=sharing';
-                    // 또는 썸네일/미리보기: 'https://drive.google.com/thumbnail?id=' + fileIds[0]
-                    // 또는 다운로드: 'https://drive.google.com/uc?export=download&id=' + fileIds[0]
                     cardLi.appendChild(photoLinkA);
                 }
             }
@@ -426,13 +276,12 @@
             }
         }
 
-        // --- UI 상태 업데이트 ---
         function showLoadingState(isLoading) {
             document.getElementById('loadingIndicator').style.display = isLoading ? 'block' : 'none';
-            document.getElementById('noResultsDisplay').style.display = 'none'; // 로딩 중에는 다른 메시지 숨김
+            document.getElementById('noResultsDisplay').style.display = 'none';
             document.getElementById('errorDisplay').style.display = 'none';
             if (isLoading) {
-                document.getElementById('lostItemList').innerHTML = ''; // 로딩 시작 시 기존 목록 비움
+                document.getElementById('lostItemList').innerHTML = '';
                 document.getElementById('paginationControls').style.display = 'none';
                 document.getElementById('resultsSummary').style.display = 'none';
             }
@@ -440,16 +289,16 @@
 
         function displayErrorMessage(message) {
             var errorP = document.getElementById('errorDisplay');
-            errorP.innerHTML = '<p>' + escapeText(message) + '</p>'; // 내부 p 태그에 메시지 삽입
+            errorP.innerHTML = '<p>' + escapeText(message) + '</p>';
             errorP.style.display = 'block';
-            document.getElementById('paginationControls').style.display = 'none'; // 오류 시 페이징 숨김
+            document.getElementById('paginationControls').style.display = 'none';
             document.getElementById('resultsSummary').style.display = 'none';
         }
 
         function updateResultsSummary(currentPage, totalPages, totalItems) {
             var summaryEl = document.getElementById('resultsSummary');
             if (totalItems > 0) {
-                var itemsPerPage = <?= ITEMS_PER_PAGE ?>; // Code.gs와 동일한 값 사용
+                var itemsPerPage = <?= ITEMS_PER_PAGE ?>;
                 var startItem = (currentPage - 1) * itemsPerPage + 1;
                 var endItem = Math.min(currentPage * itemsPerPage, totalItems);
                 summaryEl.textContent = '총 ' + totalItems + '개의 분실물 중 ' + startItem + ' - ' + endItem + '번째 항목 표시 중';
@@ -464,8 +313,7 @@
             var pageInfoSpan = document.getElementById('currentPageInfo');
             var prevBtn = document.getElementById('prevPageBtn');
             var nextBtn = document.getElementById('nextPageBtn');
-
-            if (totalPages > 0) {
+            if (totalPages > 0 && totalPages > 1) {
                 controlsNav.style.display = 'flex';
                 pageInfoSpan.textContent = '페이지 ' + currentPage + ' / ' + totalPages;
                 prevBtn.disabled = (currentPage <= 1);
@@ -475,8 +323,7 @@
             }
         }
 
-        // --- 유틸리티 함수 ---
-        function escapeText(text) { // 간단한 XSS 방지용 (텍스트 내용에만 사용)
+        function escapeText(text) {
             if (typeof text !== 'string') {
                 if (text === null || typeof text === 'undefined') return '';
                 text = String(text);
@@ -486,20 +333,23 @@
             return div.innerHTML;
         }
 
-        function formatDateString(dateStr) { // ISO 날짜 문자열을 YYYY-MM-DD로 변환
+        function formatDateString(dateStr) {
             if (!dateStr) return '';
             try {
                 var dateObj = new Date(dateStr);
-                // 유효한 날짜인지 확인
                 if (isNaN(dateObj.getTime())) {
-                    return dateStr; // 변환 실패 시 원본 반환
+                    var parts = String(dateStr).match(/(\d{4})[^\d]*(\d{1,2})[^\d]*(\d{1,2})/);
+                    if (parts && parts.length === 4) {
+                        return parts[1] + '-' + ('0' + parts[2]).slice(-2) + '-' + ('0' + parts[3]).slice(-2);
+                    }
+                    return dateStr;
                 }
                 var year = dateObj.getFullYear();
                 var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
                 var day = ('0' + dateObj.getDate()).slice(-2);
                 return year + '-' + month + '-' + day;
             } catch (e) {
-                return dateStr; // 오류 발생 시 원본 반환
+                return dateStr;
             }
         }
     </script>
