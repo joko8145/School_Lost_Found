@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 앱스 스크립트 내 HTML 파일로 사용할 경우 아래 base 태그 주석 해제 -->
+    <!-- <base target="_top"> -->
+    <title>학교 분실물 등록 안내</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2; /* 학교/신뢰감 주는 파란색 계열 */
+            --secondary-color: #50e3c2; /* 행동 유도/긍정적 느낌의 청록색 */
+            --text-color-dark: #333333;
+            --text-color-light: #555555;
+            --background-color: #f4f7f6; /* 부드러운 배경색 */
+            --white-color: #ffffff;
+            --border-color-light: #e0e0e0;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color-dark);
+        }
+        .site-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 25px 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 40px; /* 컨테이너와의 간격 */
+        }
+        .site-header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .main-container {
+            width: 90%;
+            max-width: 650px; /* 내용에 집중할 수 있도록 적절한 너비 */
+            margin: 0 auto 40px auto;
+            padding: 35px 40px; /* 내부 여백 증가 */
+            background-color: var(--white-color);
+            border-radius: 12px; /* 더 부드러운 모서리 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .container-title {
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.7em; /* 제목 강조 */
+            font-weight: 600;
+        }
+        .container-description {
+            margin-bottom: 35px; /* 버튼과의 간격 */
+            color: var(--text-color-light);
+            font-size: 1.05em; /* 가독성 좋은 크기 */
+            line-height: 1.75; /* 줄 간격 */
+        }
+        .action-button-primary {
+            display: inline-block;
+            padding: 16px 38px; /* 버튼 크기 증가 */
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #48c6ef 100%); /* 그라데이션 배경 */
+            color: var(--white-color); /* 텍스트 색상 변경 */
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em; /* 버튼 텍스트 크기 */
+            font-weight: 600; /* 버튼 텍스트 두께 */
+            text-align: center;
+            transition: all 0.3s ease; /* 부드러운 전환 효과 */
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .action-button-primary:hover, .action-button-primary:focus {
+            transform: translateY(-3px) scale(1.03); /* 호버 시 약간 커지며 위로 이동 */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #40d3b2 0%, #3ab0d8 100%); /* 호버 시 색상 변경 */
+        }
+        .action-button-primary:active {
+            transform: translateY(-1px) scale(1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .notice-text {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #777777;
+        }
+        .footer-navigation {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .nav-link-secondary {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d; /* 보조 버튼 색상 */
+            color: var(--white-color);
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .nav-link-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                width: 95%;
+                padding: 25px 20px;
+                margin-bottom: 30px;
+            }
+            .site-header h1 {
+                font-size: 1.7em;
+            }
+            .container-title {
+                font-size: 1.5em;
+            }
+            .action-button-primary {
+                padding: 14px 30px;
+                font-size: 1em;
+            }
+            .footer-navigation {
+                margin-bottom: 30px;
+            }
+            .nav-link-secondary {
+                padding: 9px 18px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>학교 분실물 센터</h1>
+    </header>
+
+    <main class="main-container">
+        <h2 class="container-title">분실물 등록 안내</h2>
+        <p class="container-description">
+            습득하신 분실물의 정보를 등록하시려면 아래 버튼을 클릭하여<br>
+            분실물 등록 양식을 작성해주세요. (사진 첨부 가능)<br>
+            작성하신 정보는 분실물을 찾는 데 큰 도움이 됩니다.
+        </p>
+
+        <div>
+            <!-- ▼▼▼ [중요] YOUR_GOOGLE_FORM_SHARE_LINK_HERE를 실제 Google Form "공유 링크"로 바꾸세요. ▼▼▼ -->
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeX6J5pEMevHP3CVcM4nalMhxhAQDCfbXTJDNWImXxTHrkZAQ/viewform?usp=header" target="_blank" class="action-button-primary">
+                분실물 등록 양식 열기
+            </a>
+            <!-- ▲▲▲ 링크를 정확히 넣어주세요. ▲▲▲ -->
+        </div>
+        <p class="notice-text">
+            버튼 클릭 시 새 창에서 Google 등록 양식이 열립니다.
+        </p>
+    </main>
+
+    <footer class="footer-navigation">
+        <!-- 분실물 조회 페이지 URL을 정확히 넣어주세요. -->
+        <!-- 앱스 스크립트 웹앱의 URL 예시: <a href="<?= ScriptApp.getService().getUrl() ?>" class="nav-link-secondary">분실물 목록 보기</a> -->
+        <a href="https://script.google.com/macros/s/AKfycbzVBloj2fxhsusYJUV2GRuNLUWvWIT74GuIKujAnUV5v_xj1dXMK-D0Wbml-427Hjs/exec" class="nav-link-secondary">분실물 목록 보기</a>
+    </footer>
+
+</body>
+</html>

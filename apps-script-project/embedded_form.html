@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 앱스 스크립트 내 HTML 파일이라면 아래 base 태그 추가 -->
+    <!-- <base target="_top"> -->
+    <title>학교 분실물 등록</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --text-color: #333;
+            --light-gray: #f0f2f5;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+        .header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 25px 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2em; /* 이전보다 약간 크게 */
+            font-weight: 700;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px; /* 이전보다 약간 좁게, 폼 버튼에 집중 */
+            margin: 0 auto 30px auto;
+            padding: 30px 35px; /* 패딩 약간 늘림 */
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center; /* 내용물 중앙 정렬 */
+        }
+        .form-title {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 1.6em; /* 이전보다 약간 크게 */
+            font-weight: 600;
+        }
+        .form-description {
+            margin-bottom: 30px; /* 버튼과의 간격 확보 */
+            color: #555;
+            font-size: 1em; /* 이전보다 약간 크게 */
+            line-height: 1.7;
+        }
+        .register-form-link-button {
+            display: inline-block;
+            padding: 18px 35px; /* 버튼 크기 키움 */
+            background-color: var(--secondary-color); /* 밝은 녹색/청록색 계열 */
+            color: var(--text-color); /* 어두운 텍스트 색상으로 가독성 확보 */
+            text-decoration: none;
+            border-radius: 8px; /* 둥근 모서리 */
+            font-size: 1.15em; /* 글꼴 크기 키움 */
+            font-weight: 600; /* 글꼴 두께 */
+            text-align: center;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease, box-shadow 0.2s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .register-form-link-button:hover {
+            background-color: #40d3b2; /* 호버 시 약간 더 진하게 */
+            transform: translateY(-2px); /* 살짝 위로 이동 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .register-form-link-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-notice {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .navigation-links {
+            text-align: center;
+            margin-bottom: 40px; /* 푸터 위 여백 늘림 */
+        }
+        .nav-button {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 25px;
+            background-color: #6c757d; /* 회색 계열 */
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+        }
+        .nav-button:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 25px 20px;
+            }
+            .header h1 {
+                font-size: 1.7em;
+            }
+            .form-title {
+                font-size: 1.4em;
+            }
+            .register-form-link-button {
+                padding: 15px 25px;
+                font-size: 1.05em;
+            }
+            .nav-button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>학교 분실물 관리 시스템</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="form-title">분실물 등록</h2>
+        <p class="form-description">
+            습득하신 분실물 정보를 등록하려면 아래 버튼을 클릭해주세요.<br>
+            새 창에서 등록 양식이 열리며, 사진 첨부도 가능합니다.
+        </p>
+
+        <div>
+            <!-- ▼▼▼ [중요] 여기에 Google Form의 "공유 링크"를 넣어주세요. iframe 코드가 아닙니다! ▼▼▼ -->
+            <a href="https://forms.gle/hG5TiRqNnQPEBThQ6" target="_blank" class="register-form-link-button">
+                분실물 등록 양식 열기
+            </a>
+            <!-- ▲▲▲ YOUR_GOOGLE_FORM_SHARE_LINK_HERE를 실제 Google Form 공유 링크로 바꾸세요. ▲▲▲ -->
+        </div>
+        <p class="form-notice">
+            여러분의 적극적인 참여가 소중한 물건을 찾는 데 큰 힘이 됩니다.
+        </p>
+    </div>
+
+    <div class="navigation-links">
+        <!-- 분실물 조회 페이지 URL을 정확히 넣어주세요. -->
+        <!-- 앱스 스크립트 웹앱의 URL 예시: <a href="<?= ScriptApp.getService().getUrl() ?>" class="nav-button">분실물 목록 보기</a> -->
+        <a href="YOUR_LOST_ITEMS_VIEW_PAGE_URL_HERE" class="nav-button">분실물 목록 보기</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+# 운영체제 생성 파일
+.DS_Store
+Thumbs.db
+
+# IDE/에디터 설정 파일
+.vscode/
+.idea/
+
+# 만약 로컬 테스트용 민감 정보 파일이 있다면 (절대 올리면 안 됨)
+# credentials.json
+# config.local.js
